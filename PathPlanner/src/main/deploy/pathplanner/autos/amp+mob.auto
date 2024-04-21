@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Amp"
+            "pathName": "ToAmp"
           }
         },
         {
@@ -44,7 +44,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Mid"
+            "pathName": "AmpToMid"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ZeroGyro"
           }
         }
       ]
