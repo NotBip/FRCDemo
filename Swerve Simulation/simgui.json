@@ -1,0 +1,72 @@
+{
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/Auto Chooser": "String Chooser",
+      "/SmartDashboard/Auto Mode": "String Chooser",
+      "/SmartDashboard/Example Auto": "Command",
+      "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/On-the-fly path": "Command",
+      "/SmartDashboard/Path to Heaven": "Command",
+      "/SmartDashboard/Path to Heaven1": "Command",
+      "/SmartDashboard/Path to Heaven2": "Command",
+      "/SmartDashboard/Path to Heaven3": "Command",
+      "/SmartDashboard/Test Path": "Command",
+      "/SmartDashboard/Trap": "Command"
+    },
+    "windows": {
+      "/SmartDashboard/Field": {
+        "Robot": {
+          "length": 0.7400000095367432,
+          "width": 0.7400000095367432
+        },
+        "bottom": 1476,
+        "height": 8.210550308227539,
+        "left": 150,
+        "right": 2961,
+        "top": 79,
+        "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
+      }
+    }
+  },
+  "NetworkTables": {
+    "Persistent Values": {
+      "open": false
+    },
+    "transitory": {
+      "Shuffleboard": {
+        ".recording": {
+          "open": true
+        },
+        "open": true
+      },
+      "SmartDashboard": {
+        "Auto Mode": {
+          "open": true
+        },
+        "Field": {
+          "open": true
+        },
+        "Path to Heaven": {
+          "open": true
+        },
+        "open": true
+      }
+    }
+  },
+  "NetworkTables Info": {
+    "Clients": {
+      "open": true
+    },
+    "Connections": {
+      "open": true
+    },
+    "Server": {
+      "open": true
+    },
+    "visible": true
+  }
+}
