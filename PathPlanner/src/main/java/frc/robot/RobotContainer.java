@@ -10,9 +10,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -41,12 +38,12 @@ import frc.robot.subsystems.Pneumatics;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class RobotContainer {
-        // Autonomous Chooser
-        SendableChooser<Command> autoChooser = new SendableChooser<Command>();
 
         // Field Generator
         Field2d field = new Field2d(); 
-        
+
+        SendableChooser<Command> autoChooser = new SendableChooser<>(); 
+
         // Initializing Robot's Subsystems
         public final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
         private final Intake intake = new Intake();
@@ -62,9 +59,8 @@ public class RobotContainer {
         // Initializing Commands
         // Intake
         private final IntakeSpinBack intakeSpinBack = new IntakeSpinBack(intake); 
-        private final IntakeSpinForward intakeSpinForward = new IntakeSpinForward(intake); 
         private final IntakeStop intakeStop = new IntakeStop(intake);
-        // private final IntakeFullPower intakeFullPower = new IntakeFullPower(intake); 
+        private final IntakeSpinForward intakeSpinForward = new IntakeSpinForward(intake);
         
         // Climber
         private final ClimberDown climberDown = new ClimberDown(climber); 
@@ -82,7 +78,6 @@ public class RobotContainer {
         private final NudgeRight nudgeRight = new NudgeRight(swerveSubsystem); 
         private final NudgeFront nudgeFront = new NudgeFront(swerveSubsystem); 
         private final NudgeBack nudgeBack = new NudgeBack(swerveSubsystem); 
-        // private final SourceAlign sourceAlign = new SourceAlign(swerveSubsystem); 
 
         // Game Controllers
         public JoystickButton drBtnA, drBtnB, drBtnX, drBtnY, drBtnLB, drBtnRB, drBtnStrt, drBtnSelect;
@@ -90,33 +85,13 @@ public class RobotContainer {
         
         public RobotContainer() {
                 configureNamedCommands();
-                configureButtonBindings(); 
 
-                // Adding options to Auto Chooser 
-                autoChooser.setDefaultOption("DriveStraight", new SequentialCommandGroup(
-                        new InstantCommand(() -> swerveSubsystem.zeroHeading()), 
-                        new WaitCommand(10),
-                        AutoBuilder.buildAuto("DriveStraight")));
-                
-                autoChooser.addOption("Amp", new SequentialCommandGroup(
-                        new InstantCommand(() -> swerveSubsystem.resetOdometry(PathPlannerAuto.getStaringPoseFromAutoFile("Amp1"))), 
-                        new InstantCommand(() -> swerveSubsystem.zeroHeading()),
-                        new WaitCommand(7),
-                        new PathPlannerAuto("Amp1")));
+                autoChooser.setDefaultOption("Do Nothing", null);
+                autoChooser.addOption("Amp + Mid", new PathPlannerAuto("Amp + Mid"));
+                autoChooser.addOption("1Note", new PathPlannerAuto("1Note"));
+                autoChooser.addOption("DriveStraight", new PathPlannerAuto("DriveStraight"));
 
-                autoChooser.addOption("DriveToMid", new SequentialCommandGroup(
-                        new InstantCommand(() -> swerveSubsystem.zeroHeading()), 
-                        new WaitCommand(10), 
-                        AutoBuilder.buildAuto("DriveToMid")));
-
-                autoChooser.addOption("amp + mob", new SequentialCommandGroup(
-                        new InstantCommand(() -> swerveSubsystem.resetOdometry(PathPlannerAuto.getStaringPoseFromAutoFile("Amp1"))), 
-                        new InstantCommand(() -> swerveSubsystem.zeroHeading()),
-                        new PathPlannerAuto("amp+mob")));
-
-                Shuffleboard.getTab("Autonomous").add("Select Auto", autoChooser).withSize(2, 1);
-                autoChooser.addOption("DO NOTHING!!!", null);
-
+                Shuffleboard.getTab("Autonomous").add("Auto Chooser", autoChooser); 
 
                 // set default commands for each Subsystem
                 swerveSubsystem.setDefaultCommand(new SwerveJoystickCmd(
@@ -149,12 +124,14 @@ public class RobotContainer {
                 opBtnRB = new JoystickButton(operatorJoystick, OIConstants.KXboxRightBumper);
                 opBtnSelect = new JoystickButton(operatorJoystick, OIConstants.KXboxSelectButton);
                 opBtnStrt = new JoystickButton(operatorJoystick, OIConstants.KXboxStartButton);
+                configureButtonBindings(); 
         }
 
         private void configureButtonBindings() {
-        
+                configureNamedCommands();        
+
                 // QOL Swerve Controls
-                drBtnStrt.onTrue(zeroGyro);
+                drBtnStrt.onTrue(zeroGyro); 
                 opBtnX.whileTrue(intakeSpinBack); 
                 drBtnB.whileTrue(new ClimberManualPosition(climber, 0));
 
@@ -181,10 +158,9 @@ public class RobotContainer {
         }
 
         public void configureNamedCommands() { 
-                NamedCommands.registerCommand("ShootIntake", intakeSpinForward.withTimeout(.75));  
-                NamedCommands.registerCommand("ZeroGyro", zeroGyro);
-                NamedCommands.registerCommand("ArmDown", new ClimberManualPosition(climber, 0).withTimeout(2));
-                NamedCommands.registerCommand("ArmUp", new ClimberManualPosition(climber, 0).withTimeout(2));
+                NamedCommands.registerCommand("ShootIntake", intakeSpinForward);
+                NamedCommands.registerCommand("ClimberDown", new ClimberManualPosition(climber, 0));
+                NamedCommands.registerCommand("ClimberUp", new ClimberManualPosition(climber, 79.21));
         }
 
 

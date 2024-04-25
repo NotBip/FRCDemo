@@ -8,7 +8,6 @@ public class IntakeSpinForward extends Command {
 
     public IntakeSpinForward(Intake intake) { 
         this.intake = intake; 
-        addRequirements(intake); 
     }
 
     // Called when the command is initially scheduled.
@@ -19,7 +18,7 @@ public class IntakeSpinForward extends Command {
     @Override
     public void execute() {
         intake.IntakeMotorFront(1);
-        intake.IntakeMotorBack(1);    
+        intake.IntakeMotorBack(1);
     }
 
     // Called once the command ends or is interrupted.
