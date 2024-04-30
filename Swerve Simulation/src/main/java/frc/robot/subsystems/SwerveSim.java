@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -13,11 +12,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -30,11 +27,9 @@ public class SwerveSim extends SubsystemBase {
   private SwerveDriveKinematics kinematics;
   private SwerveDriveOdometry odometry;
   private SimGyro gyro;
-  private Field2d field = new Field2d();
-  
-  // Variables for publishing Values to the Network table. 
+
   StructPublisher<Pose2d> posePublisher = NetworkTableInstance.getDefault().getStructTopic("Robot Pose", Pose2d.struct).publish(); 
-  
+    
   public SwerveSim() {
     gyro = new SimGyro();
     modules = new SimSwerveModule[]{
@@ -67,7 +62,6 @@ public class SwerveSim extends SubsystemBase {
     // Update the simulated gyro, not needed in a real project
     gyro.updateRotation(getSpeeds().omegaRadiansPerSecond);
     odometry.update(gyro.getRotation2d(), getPositions());
-    field.setRobotPose(getPose());
     posePublisher.set(getPose());
   }
 
@@ -95,7 +89,7 @@ public class SwerveSim extends SubsystemBase {
   }
 
   public void setStates(SwerveModuleState[] targetStates) {
-    SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, 4.5);
+    SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, 5);
 
     for (int i = 0; i < modules.length; i++) {
       modules[i].setTargetState(targetStates[i]);
