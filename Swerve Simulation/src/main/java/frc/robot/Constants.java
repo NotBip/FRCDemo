@@ -53,6 +53,30 @@ public final class Constants {
         public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
     }
 
+    // Module for Autonomous Mode. 
+    public static final class AutoConstants {
+        public static final double kMaxSpeedMetersPerSecond = DriveConstants.kPhysicalMaxSpeedMetersPerSecond / 4;
+        public static final double kMaxAngularSpeedRadiansPerSecond = DriveConstants.kPhysicalMaxAngularSpeedRadiansPerSecond / 4;
+        public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+        public static final double kMaxAngularAccelerationRadiansPerSecondSquared = Math.PI / 4;
+        public static final double kPXController = .3;
+        public static final double kPYController = .3;
+        public static final double kPThetaController = .3;
+
+        public static final TrapezoidProfile.Constraints kThetaControllerConstraints = //
+                new TrapezoidProfile.Constraints(
+                        kMaxAngularSpeedRadiansPerSecond, 
+                        kMaxAngularAccelerationRadiansPerSecondSquared);
+
+        public static final HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
+            new PIDConstants(0.07, 0, 0),
+            new PIDConstants(.05, 0, 0.01),
+            4.5, 
+            0.5374011537, // Drive base radius (distance from center to furthest module) 
+            new ReplanningConfig()
+        );
+    }
+
     // Module for Controller Joystick
     public static final class OIConstants {
 

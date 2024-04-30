@@ -51,10 +51,9 @@ public class SwerveJoystickCmd extends Command{
         turningSpeed = turningLimiter.calculate(turningSpeed) * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
                 
         // 4. Construct desired chassis speeds
-        ChassisSpeeds chassisSpeeds;
         if (fieldOrientedFunction.get()) {
             // Relative to field
-            swerveSim.driveRobotRelative(new ChassisSpeeds(xSpeed, ySpeed, turningSpeed));
+            swerveSim.driveFieldRelative(new ChassisSpeeds(xSpeed, ySpeed, turningSpeed));
        } else {
             // Relative to robot
             swerveSim.driveRobotRelative(new ChassisSpeeds(xSpeed*.5, ySpeed*.5, turningSpeed)); 

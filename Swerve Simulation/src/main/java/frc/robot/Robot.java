@@ -4,10 +4,8 @@
 
 package frc.robot;
 
-import java.security.PublicKey;
-import java.sql.Driver;
+import org.littletonrobotics.junction.LoggedRobot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -21,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot  {
+public class Robot extends LoggedRobot  {
 
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer; 
@@ -34,25 +32,6 @@ public class Robot extends TimedRobot  {
      */
     @Override
     public void robotInit() {
-        // Instantiate our RobotContainer. This will perform all our button bindings,
-        // and put our
-        // autonomous chooser on the dashboard.
-        // Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
-
-        // // if (isReal()) {
-        // //     Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
-        // //     Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-        // //     new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
-        // // } else {
-        //     setUseTiming(false); // Run as fast as possible
-        //     String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
-        //     Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
-        //     Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
-        // // }
-
-        // // Logger.disableDeterministicTimestamps() // See "Deterministic Timestamps" in the "Understanding Data Flow" page
-        // Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
-
         m_robotContainer = new RobotContainer();
     }
 
@@ -77,8 +56,6 @@ public class Robot extends TimedRobot  {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
-        // SmartDashboard.putNumber("ALLIANCE NUMBER", DriverStation.getLocation().getAsInt());
-        // SmartDashboard.putString("ALLIANCE COLOR", DriverStation.getAlliance().get().toString());
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
@@ -107,33 +84,6 @@ public class Robot extends TimedRobot  {
     /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
-        // boolean autoDone = false; 
-        // NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight"); 
-        // double tableID = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tid").getDouble(0); 
-        // NetworkTableEntry tx = table.getEntry("tx"); // Limelight's x-coordinate of the target
-        // NetworkTableEntry ty = table.getEntry("ty"); // Limelight's y-coordinate of the target
-        // NetworkTableEntry ta = table.getEntry("ta"); // Limelight's area of the target
-        // double x = tx.getDouble(0); 
-        // double y = ty.getDouble(0); 
-        // double area = ta.getDouble(0); 
-        // ChassisSpeeds chassisSpeeds; 
-        // SmartDashboard.putBoolean("AUTO DONE", autoDone);
-
-
-        // if (tableID == 6 && (m_robotContainer.swerveSubsystem.getHeading() <= -89 && m_robotContainer.swerveSubsystem.getHeading() >= -91) && !autoDone) { 
-        //     m_autonomousCommand.cancel();;
-        //     autoDone = true; 
-        // }
-
-        // if(tableID == 6) { 
-        //     if (x < -2) { 
-        //         SmartDashboard.putBoolean("ASDASDASDASD", true);
-        //     }
-        //     else { 
-        //         SmartDashboard.putBoolean("ASDASDASDASD", false);
-
-        //     }
-        // }
     }
 
     @Override

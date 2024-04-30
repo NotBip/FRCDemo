@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -11,8 +13,13 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 
 /**
@@ -22,10 +29,11 @@ public class SwerveSim extends SubsystemBase {
   private SimSwerveModule[] modules;
   private SwerveDriveKinematics kinematics;
   private SwerveDriveOdometry odometry;
-
   private SimGyro gyro;
+  private Field2d field = new Field2d();
   
-   private Field2d field = new Field2d();
+  // Variables for publishing Values to the Network table. 
+  StructPublisher<Pose2d> posePublisher = NetworkTableInstance.getDefault().getStructTopic("Robot Pose", Pose2d.struct).publish(); 
   
   public SwerveSim() {
     gyro = new SimGyro();
@@ -38,6 +46,20 @@ public class SwerveSim extends SubsystemBase {
 
     kinematics = DriveConstants.kDriveKinematics; 
     odometry = new SwerveDriveOdometry(kinematics, gyro.getRotation2d(), getPositions());
+
+    AutoBuilder.configureHolonomic(
+      this::getPose, 
+      this::resetOdometry, 
+      this::getSpeeds, 
+      this::driveRobotRelative, 
+      AutoConstants.pathFollowerConfig, 
+      () -> { 
+          var alliance = DriverStation.getAlliance(); 
+          if(alliance.get() == DriverStation.Alliance.Red)
+              return true; 
+          else
+              return false;
+      }, this);
   }
 
   @Override
@@ -46,13 +68,14 @@ public class SwerveSim extends SubsystemBase {
     gyro.updateRotation(getSpeeds().omegaRadiansPerSecond);
     odometry.update(gyro.getRotation2d(), getPositions());
     field.setRobotPose(getPose());
+    posePublisher.set(getPose());
   }
 
   public Pose2d getPose() {
     return odometry.getPoseMeters();
   }
 
-  public void resetPose(Pose2d pose) {
+  public void resetOdometry(Pose2d pose) {
     odometry.resetPosition(gyro.getRotation2d(), getPositions(), pose);
   }
 
